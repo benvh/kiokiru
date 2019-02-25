@@ -8,6 +8,9 @@ export declare enum LogLevel {
 export interface ILogEventPredicate {
     (event: ILogEvent): boolean;
 }
+/**
+ * Simple dictionary type to store arbitrary data
+ */
 export interface ILogEventData {
     [index: string]: any;
 }

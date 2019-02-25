@@ -13,7 +13,7 @@ export interface ILogEventPredicate {
 }
 
 /**
- * Simply dictionary type to store arbitrary data
+ * Simple dictionary type to store arbitrary data
  */
 export interface ILogEventData  {
     [index:string]:any;

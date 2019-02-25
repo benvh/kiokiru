@@ -20,7 +20,6 @@ export declare class LogEvent implements ILogEvent {
  * Pipeline based ILogger implementation. Every logged message passes through a pipeline of IPipelineStage stages.
  * Each stage passes the event along (or null to filter it out). IPipelineStages are allowed modify / decorate the ILogEvents
  * before returning them.
- *
  * All Logger instances are IPipelineStages as well. Note that they will always return the original ILogEvent when they have finished processing it.
  */
 export declare class Logger implements ILogger, IPipelineStage {
@@ -42,6 +41,9 @@ export declare class Logger implements ILogger, IPipelineStage {
      */
     static for(type: Function): LoggerBuilder;
 }
+/**
+ * Utility class to help build Logger instances.
+ */
 export declare class LoggerBuilder {
     readonly pipeline: LoggerPipeline;
     /**

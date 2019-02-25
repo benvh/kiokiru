@@ -54,15 +54,3 @@ export class ConsoleSinkStage extends SinkStage {
     }
 
 }
-
-/**
- * A generic "POST logging messages to a remote server" sink
- */
-export class RestSinkStage extends SinkStage {
-
-    write(event: ILogEvent): Promise<void> {
-        // TODO: Implement this...
-        throw new Error("Method not implemented.");
-    }
-
-}

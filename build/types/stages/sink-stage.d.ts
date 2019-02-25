@@ -14,9 +14,3 @@ export declare class ConsoleSinkStage extends SinkStage {
      */
     private getWriter;
 }
-/**
- * A generic "POST logging messages to a remote server" sink
- */
-export declare class RestSinkStage extends SinkStage {
-    write(event: ILogEvent): Promise<void>;
-}

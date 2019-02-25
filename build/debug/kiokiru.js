@@ -292,6 +292,12 @@ __export(__webpack_require__(/*! ./decorators/level-decorator */ "./src/decorato
 "use strict";
 
 exports.__esModule = true;
+/**
+ * Base decorator class for ILogEvent decoration.
+ *
+ * It provides overridable default implementations for all ILogEvent methods.
+ * The default implementation simply returns the value of original ILogEvent that needed decorating (the one that's provided in the constructor)
+ */
 var LogEventDecorator = /** @class */ (function () {
     function LogEventDecorator(event) {
         this.event = event;
@@ -325,10 +331,20 @@ exports.LogEventDecorator = LogEventDecorator;
 "use strict";
 
 exports.__esModule = true;
+/**
+ * LoggerPipeline defines an ordered list of stages. The pipeline itself also implements IPipelineStage and can be used as such.
+ *
+ * Whenever an ILogEvent is processed by a LoggerPipeline it will pass through all stages in the order they were registered.
+ * If any of the stages returns "null" all remaining stages from that point on will be skipped (useful for filtering out events)''
+ */
 var LoggerPipeline = /** @class */ (function () {
     function LoggerPipeline() {
         this.stages = [];
     }
+    /**
+     * Add a stage to the end of the pipeline
+     * @param stage
+     */
     LoggerPipeline.prototype.addStage = function (stage) {
         this.stages.push(stage);
     };
@@ -391,7 +407,6 @@ exports.LogEvent = LogEvent;
  * Pipeline based ILogger implementation. Every logged message passes through a pipeline of IPipelineStage stages.
  * Each stage passes the event along (or null to filter it out). IPipelineStages are allowed modify / decorate the ILogEvents
  * before returning them.
- *
  * All Logger instances are IPipelineStages as well. Note that they will always return the original ILogEvent when they have finished processing it.
  */
 var Logger = /** @class */ (function () {
@@ -439,6 +454,9 @@ var Logger = /** @class */ (function () {
     return Logger;
 }());
 exports.Logger = Logger;
+/**
+ * Utility class to help build Logger instances.
+ */
 var LoggerBuilder = /** @class */ (function () {
     function LoggerBuilder() {
         this.pipeline = new logger_pipeline_1.LoggerPipeline();
@@ -727,21 +745,6 @@ var ConsoleSinkStage = /** @class */ (function (_super) {
     return ConsoleSinkStage;
 }(SinkStage));
 exports.ConsoleSinkStage = ConsoleSinkStage;
-/**
- * A generic "POST logging messages to a remote server" sink
- */
-var RestSinkStage = /** @class */ (function (_super) {
-    __extends(RestSinkStage, _super);
-    function RestSinkStage() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    RestSinkStage.prototype.write = function (event) {
-        // TODO: Implement this...
-        throw new Error("Method not implemented.");
-    };
-    return RestSinkStage;
-}(SinkStage));
-exports.RestSinkStage = RestSinkStage;
 
 
 /***/ }),
@@ -757,7 +760,31 @@ exports.RestSinkStage = RestSinkStage;
 
 exports.__esModule = true;
 /**
- * Simple default TimeFormatter used in the interal TimestampPrefixDecorator
+ * Simple default TimeFormatter used in the interal TimestampPrefixDecorator.
+ *
+ * This guy is really basic and its probably best to use a different one if your timestamping requires a more feature-rich output.<br/>
+ * Following patterns are replaced by the formatter (similar to the unix date cmd format)<p>
+ *
+ * <table>
+ * <tr><td>%a</td> <td>day of the week name in short form (Mon, Tue, Wed, ...)</td></tr>
+ * <tr><td>%A</td> <td>day of the week name in long form (Monday, Tuesday, Wednesday, ...)</td></tr>
+ * <tr><td>%b</td>   <td>month name in short form (Jan, Feb, Mar, ...)</td></tr>
+ * <tr><td>%B</td>   <td>month name in long form (January, February, ...)</td></tr>
+ * <tr><td>%Y</td>   <td>full year e.g. 2018, 2019, ...</td></li>
+ * <tr><td>%m</td>   <td>month of the year (zero padded) (01, 02, 03, ... 12)</td></tr>
+ * <tr><td>%_m</td>  <td>month of the year (not padded) (1, 2, 3, ... 12)</td></tr>
+ * <tr><td>%d</td>   <td>day of the month (zero padded)</td></tr>
+ * <tr><td>%_d</td>  <td>day of the month (not padded)</td></tr>
+ * <tr><td>%H</td>   <td>hour of the day (24-hour zero padded)</td></tr>
+ * <tr><td>%_H</td>  <td>hour of the day (24-hour not padded)</td></tr>
+ * <tr><td>%I</td>   <td>hour of the day (12-hour zero padded)</td></tr>
+ * <tr><td>%_I</td>  <td>hour of the day (12-hour not padded)</td></tr>
+ * <tr><td>%M</td>   <td>minute of the current hour (zero padded)</td></tr>
+ * <tr><td>%_M</td>  <td>minute of the current hour (not padded)</td></tr>
+ * <tr><td>%S</td>   <td>second of the current minute (zero padded)</td></tr>
+ * <tr><td>%_S</td>  <td>second of the current minute (not padded)</td></tr>
+ * </table>
+ *
  */
 var TimeFormatter = /** @class */ (function () {
     function TimeFormatter(fmt) {

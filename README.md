@@ -64,3 +64,45 @@ const combinedLogger = Logger.builder().addStage(filteringLogger).addStage(nonFi
 combinedLogger.debug('this message is writting to the console!');
 
 ```
+
+
+### Remote sinks
+
+Kiokiru makes it super easy to implement a sink that posts log events to your remote server. It is not included as this would introduce unneeded
+ajax dependencies that probably do not match your preferred one, let alone support all your use-cases. 
+
+See below example to get you started.
+
+```typescript
+import axios from 'axios';
+import { ILogEvent, SinkStage } from 'kiokiru';
+
+export class AxiosSink extends SinkStage {
+
+    private remoteUrl: string;
+
+    constructor(remoteUrl: string)  {
+        super();
+        this.remoteUrl = remoteUrl;
+    }
+
+    write(event: ILogEvent): Promise<void> {
+        return axios({
+            method: 'post',
+            url: this.remoteUrl,
+            headers: { content-type: 'application/json' },
+            data: JSON.stringify(event)
+        })
+        .then((resp) => {
+            // ...
+        }) 
+        .catch((e) => {
+            // not catching errors would reject the rest of the logging pipeline!
+            // probably want to log that the logger has failed logging...? :)
+            return null;
+        });
+    }
+
+}
+
+```
