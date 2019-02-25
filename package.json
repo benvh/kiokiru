@@ -2,6 +2,10 @@
   "name": "kiokiru",
   "version": "0.1.0",
   "description": "Customizable logging library for javascript",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benvh/kiokiru"
+  },
   "main": "build/production/kiokiru.min.js",
   "types": "build/types/index.d.ts",
   "scripts": {
