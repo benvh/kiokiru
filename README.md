@@ -2,7 +2,7 @@
 Customizable Logger library for javascript
 
 ## API docs
-See the ```docs``` directory
+See the ```docs``` directory or visit https://kiokiru.benvh.tech
 
 ## Quick start
 
