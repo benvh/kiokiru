@@ -12,6 +12,9 @@ export interface ILogEventPredicate {
     (event: ILogEvent): boolean;
 }
 
+/**
+ * Simply dictionary type to store arbitrary data
+ */
 export interface ILogEventData  {
     [index:string]:any;
 }
@@ -20,9 +23,13 @@ export interface ILogEventData  {
  * Base interface for a log events
  */
 export interface ILogEvent {
+
     timestamp(): number,
+
     message(): string,
+
     level(): LogLevel,
+
     data(): ILogEventData,
 }
 

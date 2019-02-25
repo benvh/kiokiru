@@ -58,9 +58,9 @@ const filteringLogger = Logger.builder().logLevel(LogLevel.ERROR).sink(new Conso
 
 const combinedLogger = Logger.builder().addStage(filteringLogger).addStage(nonFilteringLogger).build();
 
-// The ILogEvent will reach the nonFiltering logger an be written to the console.
+// The ILogEvent will reach the nonFiltering logger and will be written to the console.
 // Logger stages always propagate the original events they receive even though the
-// stages in their internal pipeline might decorate them...
+// stages in their internal pipeline might modify/decorate them...
 combinedLogger.debug('this message is writting to the console!');
 
 ```
